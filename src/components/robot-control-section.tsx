@@ -25,24 +25,24 @@ export default function RobotControlSection({ isActive }: RobotControlSectionPro
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          <div className="grid grid-cols-3 gap-2 max-w-[240px] mx-auto">
+          <div className="grid grid-cols-3 gap-2 max-w-[240px] mx-auto ">
             <div className="col-start-2">
-              <Button variant="secondary" className="w-full aspect-square" disabled={!isActive}>
+              <Button variant="secondary" className="w-full aspect-square active:bg-fuchsia-100" disabled={!isActive}>
                 <ArrowUp className="h-6 w-6" />
               </Button>
             </div>
             <div className="col-start-1 col-end-2">
-              <Button variant="secondary" className="w-full aspect-square" disabled={!isActive}>
+              <Button variant="secondary" className="w-full aspect-square active:bg-fuchsia-100" disabled={!isActive}>
                 <ArrowLeft className="h-6 w-6" />
               </Button>
             </div>
             <div className="col-start-3 col-end-4">
-              <Button variant="secondary" className="w-full aspect-square" disabled={!isActive}>
+              <Button variant="secondary" className="w-full aspect-square active:bg-fuchsia-100" disabled={!isActive}>
                 <ArrowRight className="h-6 w-6" />
               </Button>
             </div>
             <div className="col-start-2">
-              <Button variant="secondary" className="w-full aspect-square" disabled={!isActive}>
+              <Button variant="secondary" className="w-full aspect-square active:bg-fuchsia-100" disabled={!isActive}>
                 <ArrowDown className="h-6 w-6" />
               </Button>
             </div>
