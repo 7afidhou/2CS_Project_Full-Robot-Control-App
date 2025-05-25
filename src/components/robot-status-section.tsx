@@ -36,7 +36,7 @@ function RobotStatusSection({ robotState }: RobotStatusSectionProps) {
         <div className="space-y-2">
           <div className="flex justify-between">
             <span className="text-gray-500">Connection</span>
-            <span className="text-green-600">{connectionBars} bars</span>
+            <span className="text-green-600">{connectionBars}</span>
           </div>
           <div className="flex items-center gap-2">
             <Wifi className="h-5 w-5 text-green-600" />
