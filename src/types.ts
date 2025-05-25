@@ -1,6 +1,5 @@
 export interface RobotState {
-    batteryLevel: number
-    connectionStatus: string
+    connectionBars: number
     temperature: number
   }
   

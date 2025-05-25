@@ -1,12 +1,11 @@
-// move.ts
-"use server"
 
-const BASE_URL = "http://192.168.244.191:5000"  // example: http://192.168.1.100:5000
 
-async function sendMoveCommand(action: string) {
+const BASE_URL = "http://192.168.50.191:5000"  
+
+async function sendMoveCommand(action: string, speed: number) {
   const formData = new FormData();
   formData.append("action", action);
-    formData.append("speed", "100");
+  formData.append("speed", speed.toString());
 
   try {
     const response = await fetch(BASE_URL, {
@@ -22,11 +21,10 @@ async function sendMoveCommand(action: string) {
   }
 }
 
-export const move = {
-  forward: () => sendMoveCommand("forward"),
-  backward: () => sendMoveCommand("backward"),
-  left: () => sendMoveCommand("left"),
-  right: () => sendMoveCommand("right"),
-  stop: () => sendMoveCommand("stop"),
-
-};
+export const move = (speed: number) => ({
+  forward: () => sendMoveCommand("forward", speed),
+  backward: () => sendMoveCommand("backward", speed),
+  left: () => sendMoveCommand("left", speed),
+  right: () => sendMoveCommand("right", speed),
+  stop: () => sendMoveCommand("stop", speed),
+});

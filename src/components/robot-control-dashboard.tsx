@@ -26,8 +26,8 @@ export default function RobotControlDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <CameraSection className="lg:col-span-2" isActive={isActive} />
-        <RobotStatusSection robotState={robotState} />
         <RobotControlSection isActive={isActive} />
+        <RobotStatusSection  />
         <ObjectDetectionSection className="lg:col-span-2" detectedObjects={detectedObjects} />
       </div>
     </div>
