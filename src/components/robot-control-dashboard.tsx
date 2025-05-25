@@ -59,10 +59,10 @@ export default function RobotControlDashboard() {
         <CameraSection className="lg:col-span-2" isActive={isActive} />
         <RobotControlSection isActive={isActive} />
         <RobotStatusSection />
-        <ObjectDetectionSection
+        {/* <ObjectDetectionSection
           className="lg:col-span-2"
           detectedObjects={detectedObjects}
-        />
+        /> */}
       </div>
     </div>
   );
