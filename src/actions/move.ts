@@ -1,6 +1,8 @@
 
 
-const BASE_URL = "http://192.168.50.191:5000"  
+const BASE_IP = process.env.NEXT_PUBLIC_RASBERRY_PI_IP ;
+const PORT = process.env.NEXT_PUBLIC_CAR_PORT ;
+const BASE_URL = `http://${BASE_IP}:${PORT}`; 
 
 async function sendMoveCommand(action: string, speed: number) {
   const formData = new FormData();

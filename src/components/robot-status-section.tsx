@@ -29,7 +29,7 @@ function RobotStatusSection({ robotState }: RobotStatusSectionProps) {
           </div>
           <div className="flex items-center gap-2">
             <Thermometer className={`h-5 w-5 ${temperatureStatusColor}`} />
-            <Progress value={(temperature - 35) * (100 / 25)} className="h-2" />
+            <Progress value={(temperature - 35) * (100 / 35)} className="h-2" />
           </div>
         </div>
 
@@ -82,7 +82,6 @@ export default function RobotStatusFetcher() {
 
   async function updateStatus() {
     const status = await fetchRobotStatus()
-    console.log(status)
     if (status) setRobotState(status)
   }
 
