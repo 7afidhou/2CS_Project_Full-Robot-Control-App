@@ -102,12 +102,6 @@ export default function CameraSection({ className, isActive }: CameraSectionProp
     newEventSource.onmessage = (event) => {
       try {
         const data: DetectionData = JSON.parse(event.data);
-        
-        // if (data.error) {
-        //   console.error('Detection data error:', data.error);
-        //   return;
-        // }
-
         setDetectedObjects(data.objects || []);
         setLastUpdated(new Date().toLocaleTimeString());
         
@@ -270,12 +264,6 @@ export default function CameraSection({ className, isActive }: CameraSectionProp
             {getConnectionStatusIcon()}
             <span className="capitalize">{connectionStatus}</span>
           </div>
-          <Button variant="outline" size="icon" className="h-8 w-8">
-            <ZoomIn className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon" className="h-8 w-8">
-            <ZoomOut className="h-4 w-4" />
-          </Button>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>

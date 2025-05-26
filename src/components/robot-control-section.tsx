@@ -7,12 +7,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useState,useRef,useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Maximize2, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Gauge } from "lucide-react";
-//import { Value } from "@radix-ui/react-select";
+
 import { arm } from "@/actions/arm";
 interface RobotControlSectionProps {
   isActive: boolean;
@@ -22,17 +29,54 @@ export default function RobotControlSection({
   isActive,
 }: RobotControlSectionProps) {
   const [speed, setSpeed] = useState(100);
-
+  const [isFullscreen,setIsFullscreen]=useState(false)
+  const containerRef = useRef<HTMLDivElement>(null);
   const handleSpeedChange = (value: number[]) => {
     setSpeed(value[0]);
   };
+    useEffect(() => {
+      const handleFullscreenChange = () => {
+        setIsFullscreen(!!document.fullscreenElement);
+      };
+  
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+      return () => {
+        document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      };
+    }, []);
+
+const handleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      containerRef.current?.requestFullscreen().catch((err) => {
+        console.error("Error attempting to enable full-screen mode:", err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
   return (
-    <Card className="bg-white border-gray-200 shadow-sm">
-      <CardHeader>
+    <Card ref={containerRef} className="bg-white border-gray-200 shadow-sm">
+      <CardHeader className="flex justify-between">
         <CardTitle className="text-xl font-medium text-gray-800">
           Robot Control
         </CardTitle>
+         <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button onClick={handleFullscreen} variant="outline" size="icon" className="h-8 w-8">
+                  {isFullscreen ? (
+                    <Minimize2 className="h-4 w-4" />
+                  ) : (
+                    <Maximize2 className="h-4 w-4" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
@@ -40,7 +84,7 @@ export default function RobotControlSection({
           <div className="grid grid-cols-3 gap-2 max-w-[240px] mx-auto">
             <div className="col-start-2">
               <Button
-                variant="secondary"
+                variant="outline"
                 className="w-full aspect-square active:bg-fuchsia-100"
                 onClick={() => move(speed).forward()}
                 disabled={!isActive}
@@ -50,7 +94,7 @@ export default function RobotControlSection({
             </div>
             <div className="col-start-1 col-end-2">
               <Button
-                variant="secondary"
+                variant="outline"
                 className="w-full aspect-square active:bg-fuchsia-100"
                 onClick={() => move(speed).right()}
                 disabled={!isActive}
@@ -60,7 +104,7 @@ export default function RobotControlSection({
             </div>
             <div className="col-start-3 col-end-4">
               <Button
-                variant="secondary"
+                variant="outline"
                 className="w-full aspect-square active:bg-fuchsia-100"
                 onClick={() => move(speed).left()}
                 disabled={!isActive}
@@ -70,7 +114,7 @@ export default function RobotControlSection({
             </div>
             <div className="col-start-2">
               <Button
-                variant="secondary"
+                variant="outline"
                 className="w-full aspect-square active:bg-fuchsia-100"
                 onClick={() => move(speed).backward()}
                 disabled={!isActive}

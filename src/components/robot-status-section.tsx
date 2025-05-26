@@ -1,25 +1,93 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { useEffect, useState , useRef} from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { AlertTriangle, Thermometer, Wifi } from "lucide-react"
 import { getStatusColor } from "@/utils/status-utils"
 import type { RobotState } from "@/types"
 import { fetchRobotStatus } from "@/actions/status"
+import { Button } from "@/components/ui/button";
+
+import { Maximize2, Minimize2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 interface RobotStatusSectionProps {
   robotState: RobotState
 }
 
+export default function RobotStatusFetcher() {
+  const [robotState, setRobotState] = useState<RobotState>({
+    temperature: 0,
+    connectionBars: 0,
+  })
+
+  async function updateStatus() {
+    const status = await fetchRobotStatus()
+    if (status) setRobotState(status)
+  }
+
+  useEffect(() => {
+    updateStatus() // fetch immediately
+    const interval = setInterval(updateStatus, 5000) // fetch every 5 seconds
+    return () => clearInterval(interval)
+  }, [])
+
+  return <RobotStatusSection robotState={robotState} />
+}
+
+
 function RobotStatusSection({ robotState }: RobotStatusSectionProps) {
   const { temperature, connectionBars } = robotState
-
   const temperatureStatusColor = getStatusColor(temperature, 55, 45, true)
+  const [isFullscreen,setIsFullscreen]=useState(false)
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+      const handleFullscreenChange = () => {
+        setIsFullscreen(!!document.fullscreenElement);
+      };
+  
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+      return () => {
+        document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      };
+    }, []);
+
+const handleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      containerRef.current?.requestFullscreen().catch((err) => {
+        console.error("Error attempting to enable full-screen mode:", err);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
   return (
-    <Card className="bg-white border-gray-200 shadow-sm">
-      <CardHeader>
+    <Card ref={containerRef} className="bg-white border-gray-200 shadow-sm">
+      <CardHeader className="flex justify-between">
         <CardTitle className="text-xl font-medium text-gray-800">Robot Status</CardTitle>
+         <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button onClick={handleFullscreen} variant="outline" size="icon" className="h-8 w-8">
+                  {isFullscreen ? (
+                    <Minimize2 className="h-4 w-4" />
+                  ) : (
+                    <Maximize2 className="h-4 w-4" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
@@ -72,24 +140,4 @@ function RobotStatusSection({ robotState }: RobotStatusSectionProps) {
       </CardContent>
     </Card>
   )
-}
-
-export default function RobotStatusFetcher() {
-  const [robotState, setRobotState] = useState<RobotState>({
-    temperature: 0,
-    connectionBars: 0,
-  })
-
-  async function updateStatus() {
-    const status = await fetchRobotStatus()
-    if (status) setRobotState(status)
-  }
-
-  useEffect(() => {
-    updateStatus() // fetch immediately
-    const interval = setInterval(updateStatus, 5000) // fetch every 5 seconds
-    return () => clearInterval(interval)
-  }, [])
-
-  return <RobotStatusSection robotState={robotState} />
 }
