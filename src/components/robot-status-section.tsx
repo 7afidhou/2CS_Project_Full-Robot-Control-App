@@ -43,7 +43,7 @@ export default function RobotStatusFetcher() {
 
 function RobotStatusSection({ robotState }: RobotStatusSectionProps) {
   const { temperature, connectionBars } = robotState
-  const temperatureStatusColor = getStatusColor(temperature, 55, 45, true)
+  const temperatureStatusColor = getStatusColor(temperature, 60, 40, true)
   const [isFullscreen,setIsFullscreen]=useState(false)
   const containerRef = useRef<HTMLDivElement>(null);
 
