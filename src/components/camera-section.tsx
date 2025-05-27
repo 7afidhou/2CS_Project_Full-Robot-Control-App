@@ -312,7 +312,7 @@ export default function CameraSection({ className, isActive }: CameraSectionProp
         {/* Video Feed */}
         <div
           className={`relative bg-gray-100 rounded-md flex items-center justify-center border border-gray-200 ${
-            isFullscreen ? "w-full h-full" : "w-[640px] h-[480px]"
+            isFullscreen ? "w-full h-full" : "w-full h-[480px]"
           }`}
         >
           <div className="absolute top-0 left-0 m-2 z-10">
@@ -332,7 +332,7 @@ export default function CameraSection({ className, isActive }: CameraSectionProp
               src={`http://${IP}:${CAMERA_PORT}/video_feed`}
               alt="Live Camera Feed"
               className={`rounded-md object-cover ${
-                isFullscreen ? "w-full h-screen" : "w-[640px] h-[480px]"
+                isFullscreen ? "w-full h-screen" : "w-[60%] "
               }`}
               onError={(e) => {
                 console.log('Video stream error - attempting to reload');
