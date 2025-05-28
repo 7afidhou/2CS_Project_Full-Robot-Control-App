@@ -59,7 +59,7 @@ const handleFullscreen = () => {
     <Card ref={containerRef} className="bg-white border-gray-200 shadow-sm">
       <CardHeader className="flex justify-between">
         <CardTitle className="text-xl font-medium text-gray-800">
-          Robot Control
+          Car Control
         </CardTitle>
          <TooltipProvider>
             <Tooltip>
